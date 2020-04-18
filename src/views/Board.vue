@@ -37,7 +37,7 @@
       </div>
     </div>
 
-    <div class="task-bg" v-if="isTaskOpen" @click="close">
+    <div class="task-bg" v-if="isTaskOpen" @click.self="close">
       <router-view></router-view>
     </div>
   </div>
