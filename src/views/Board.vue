@@ -24,13 +24,23 @@
         </div>
       </div>
     </div>
+
+    <div class="task-bg" v-if="isTaskOpen">
+      <router-view></router-view>
+    </div>
+
   </div>
 </template>
 <script>
 import { mapState } from 'vuex'
 
 export default {
-  computed: mapState(['board'])
+  computed: {
+    ...mapState(['board']),
+    isTaskOpen () {
+      return this.$route.name === 'task'
+    }
+  }
 }
 </script>
 

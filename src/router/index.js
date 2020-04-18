@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Board from '../views/Board.vue'
+import Task from '../components/Task.vue'
 
 Vue.use(VueRouter)
 
@@ -11,7 +12,14 @@ const router = new VueRouter({
     {
       path: '/',
       name: 'board',
-      component: Board
+      component: Board,
+      children: [
+        {
+          path: 'task/:id',
+          name: 'task',
+          component: Task
+        }
+      ]
     }
   ]
 })
