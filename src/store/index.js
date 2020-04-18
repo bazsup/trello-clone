@@ -31,6 +31,9 @@ export default new Vuex.Store({
         name,
         description: ''
       })
+    },
+    UPDATE_TASK (state, { task, key, value }) {
+      task[key] = value
     }
   },
   actions: {
