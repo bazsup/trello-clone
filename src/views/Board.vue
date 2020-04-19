@@ -5,9 +5,11 @@
         class="column"
         v-for="(column, $columnIndex) of board.columns"
         :key="$columnIndex"
-        @drop="moveTask($event, column.tasks)"
+        draggable
+        @drop="moveTaskOrColumn($event, column.tasks, $columnIndex)"
         @dragover.prevent
         @dragenter.prevent
+        @dragstart.self="pickupColumn($event, $columnIndex)"
       >
         <div class="flex items-center mb-2 font-bold">
           {{ column.name }}
@@ -71,7 +73,15 @@ export default {
       event.dataTransfer.effectAllowed = 'move'
       event.dataTransfer.dropEffect = 'move'
 
+      event.dataTransfer.setData('type', 'task')
       event.dataTransfer.setData('task-index', taskIndex)
+      event.dataTransfer.setData('from-column-index', fromColumnIndex)
+    },
+    pickupColumn (event, fromColumnIndex) {
+      event.dataTransfer.effectAllowed = 'move'
+      event.dataTransfer.dropEffect = 'move'
+
+      event.dataTransfer.setData('type', 'column')
       event.dataTransfer.setData('from-column-index', fromColumnIndex)
     },
     moveTask (event, toTasks) {
@@ -85,6 +95,23 @@ export default {
         toTasks,
         taskIndex
       })
+    },
+    moveColumn (event, toColumnIndex) {
+      const fromColumnIndex = event.dataTransfer.getData('from-column-index')
+      console.log(typeof fromColumnIndex, typeof toColumnIndex)
+      this.$store.commit('MOVE_COLUMN', {
+        fromColumnIndex,
+        toColumnIndex
+      })
+    },
+    moveTaskOrColumn (event, toTask, toColumnIndex) {
+      const type = event.dataTransfer.getData('type')
+
+      if (type === 'task') {
+        this.moveTask(event, toTask)
+      } else if (type === 'column') {
+        this.moveColumn(event, toColumnIndex)
+      }
     }
   }
 }
