@@ -22,6 +22,9 @@
             draggable
             @dragstart="pickupTask($event, $taskIndex, $columnIndex)"
             @click="goToTask(task)"
+            @dragover.prevent
+            @dragenter.prevent
+            @drop.stop="moveTaskOrColumn($event, column.tasks, $columnIndex, $taskIndex)"
           >
             <span class="w-full flex-no-shrink font-bold">
               {{ task.name }}
@@ -74,7 +77,7 @@ export default {
       event.dataTransfer.dropEffect = 'move'
 
       event.dataTransfer.setData('type', 'task')
-      event.dataTransfer.setData('task-index', taskIndex)
+      event.dataTransfer.setData('from-task-index', taskIndex)
       event.dataTransfer.setData('from-column-index', fromColumnIndex)
     },
     pickupColumn (event, fromColumnIndex) {
@@ -84,16 +87,19 @@ export default {
       event.dataTransfer.setData('type', 'column')
       event.dataTransfer.setData('from-column-index', fromColumnIndex)
     },
-    moveTask (event, toTasks) {
+    moveTask (event, toTasks, toTaskIndex) {
       const fromColumnIndex = event.dataTransfer.getData('from-column-index')
       const fromTasks = this.board.columns[fromColumnIndex].tasks
 
-      const taskIndex = event.dataTransfer.getData('task-index')
+      const fromTaskIndex = event.dataTransfer.getData('from-task-index')
+
+      console.log(fromTaskIndex, toTaskIndex)
 
       this.$store.commit('MOVE_TASK', {
         fromTasks,
         toTasks,
-        taskIndex
+        fromTaskIndex,
+        toTaskIndex
       })
     },
     moveColumn (event, toColumnIndex) {
@@ -104,11 +110,11 @@ export default {
         toColumnIndex
       })
     },
-    moveTaskOrColumn (event, toTask, toColumnIndex) {
+    moveTaskOrColumn (event, toTask, toColumnIndex, toTaskIndex) {
       const type = event.dataTransfer.getData('type')
 
       if (type === 'task') {
-        this.moveTask(event, toTask)
+        this.moveTask(event, toTask, toTaskIndex)
       } else if (type === 'column') {
         this.moveColumn(event, toColumnIndex)
       }
