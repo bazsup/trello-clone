@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Board from '../views/Board.vue'
-import Task from '../components/Task.vue'
+import Task from '../views/Task.vue'
 
 Vue.use(VueRouter)
 
