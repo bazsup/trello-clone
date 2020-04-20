@@ -2,6 +2,7 @@
   <div
     draggable
     @dragstart.self="onDrag"
+    v-on="$listeners"
   >
     <slot />
   </div>
