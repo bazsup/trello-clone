@@ -57,8 +57,11 @@ export default {
       event.dataTransfer.effectAllowed = 'move'
       event.dataTransfer.dropEffect = 'move'
 
-      event.dataTransfer.setData('type', 'column')
-      event.dataTransfer.setData('from-column-index', fromColumnIndex)
+      const payload = {
+        type: 'column',
+        fromColumnIndex: fromColumnIndex
+      }
+      event.dataTransfer.setData('payload', JSON.stringify(payload))
     },
     createTask (event, tasks) {
       this.$store.commit('CREATE_TASK', { tasks, name: event.target.value })

@@ -40,9 +40,12 @@ export default {
       event.dataTransfer.effectAllowed = 'move'
       event.dataTransfer.dropEffect = 'move'
 
-      event.dataTransfer.setData('type', 'task')
-      event.dataTransfer.setData('from-task-index', taskIndex)
-      event.dataTransfer.setData('from-column-index', fromColumnIndex)
+      const payload = {
+        type: 'task',
+        fromTaskIndex: taskIndex,
+        fromColumnIndex: fromColumnIndex
+      }
+      event.dataTransfer.setData('payload', JSON.stringify(payload))
     },
     goToTask (task) {
       this.$router.push({ name: 'task', params: { id: task.id } })
