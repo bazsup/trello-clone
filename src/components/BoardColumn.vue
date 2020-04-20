@@ -1,9 +1,7 @@
 <template>
-  <div
+  <AppDrop
     class="column"
-    @drop="moveTaskOrColumn($event)"
-    @dragover.prevent
-    @dragenter.prevent
+    @drop="moveTaskOrColumn"
   >
     <AppDrag
       :transferData="{
@@ -33,18 +31,20 @@
         />
       </div>
     </AppDrag>
-  </div>
+  </AppDrop>
 </template>
 
 <script>
 import ColumnTask from '@/components/ColumnTask'
 import moveTaskOrColumnMixin from '@/mixins/moveTaskOrColumnMixin'
 import AppDrag from '@/components/AppDrag'
+import AppDrop from '@/components/AppDrop'
 
 export default {
   components: {
     ColumnTask,
-    AppDrag
+    AppDrag,
+    AppDrop
   },
   mixins: [moveTaskOrColumnMixin],
   props: {
