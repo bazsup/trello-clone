@@ -2,7 +2,7 @@
   <div
     @dragover.prevent
     @dragenter.prevent
-    @drop="onDrop"
+    @drop.stop="onDrop"
   >
     <slot />
   </div>
