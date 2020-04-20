@@ -1,42 +1,36 @@
 <template>
   <div
-    class="column"
+    class="task"
     draggable
-    @drop="moveTaskOrColumn($event, column.tasks, columnIndex)"
+    @dragstart="pickupTask($event, taskIndex, columnIndex)"
+    @click="goToTask(task)"
     @dragover.prevent
     @dragenter.prevent
-    @dragstart.self="pickupColumn($event, columnIndex)"
+    @drop.stop="moveTaskOrColumn($event, column.tasks, columnIndex, taskIndex)"
   >
-    <div class="flex items-center mb-2 font-bold">
-      {{ column.name }}
-    </div>
-    <div class="list-reset">
-      <ColumnTask
-        v-for="(task, $taskIndex) of column.tasks"
-        :key="task.id"
-        :task="task"
-        :taskIndex="$taskIndex"
-        :column="column"
-        :columnIndex="columnIndex"
-        :board="board"
-      />
-
-      <input
-        type="text"
-        class="block p-2 w-full bg-transparent"
-        placeholder="+ Enter new task"
-        @keyup.enter="createTask($event, column.tasks)"
-      />
-    </div>
+    <span class="w-full flex-no-shrink font-bold">
+      {{ task.name }}
+    </span>
+    <p
+      v-if="task.description"
+      class="w-full flex-no-shrink mt-1 text-sm"
+    >
+      {{ task.description }}
+    </p>
   </div>
 </template>
 
 <script>
-import ColumnTask from '@/components/ColumnTask'
-
 export default {
-  components: { ColumnTask },
   props: {
+    task: {
+      type: Object,
+      required: true
+    },
+    taskIndex: {
+      type: Number,
+      required: true
+    },
     column: {
       type: Object,
       required: true
@@ -51,6 +45,17 @@ export default {
     }
   },
   methods: {
+    pickupTask (event, taskIndex, fromColumnIndex) {
+      event.dataTransfer.effectAllowed = 'move'
+      event.dataTransfer.dropEffect = 'move'
+
+      event.dataTransfer.setData('type', 'task')
+      event.dataTransfer.setData('from-task-index', taskIndex)
+      event.dataTransfer.setData('from-column-index', fromColumnIndex)
+    },
+    goToTask (task) {
+      this.$router.push({ name: 'task', params: { id: task.id } })
+    },
     moveTaskOrColumn (event, toTask, toColumnIndex, toTaskIndex) {
       const type = event.dataTransfer.getData('type')
 
@@ -79,24 +84,13 @@ export default {
         fromColumnIndex,
         toColumnIndex
       })
-    },
-    pickupColumn (event, fromColumnIndex) {
-      event.dataTransfer.effectAllowed = 'move'
-      event.dataTransfer.dropEffect = 'move'
-
-      event.dataTransfer.setData('type', 'column')
-      event.dataTransfer.setData('from-column-index', fromColumnIndex)
-    },
-    createTask (event, tasks) {
-      this.$store.commit('CREATE_TASK', { tasks, name: event.target.value })
     }
   }
 }
 </script>
 
 <style lang="css">
-.column {
-  @apply bg-gray-300 p-2 mr-4 text-left shadow rounded;
-  min-width: 350px;
+.task {
+  @apply flex items-center flex-wrap shadow mb-2 py-2 px-2 rounded bg-white text-gray-900 no-underline;
 }
 </style>
