@@ -33,9 +33,11 @@
 
 <script>
 import ColumnTask from '@/components/ColumnTask'
+import moveTaskOrColumnMixin from '@/mixins/moveTaskOrColumnMixin'
 
 export default {
   components: { ColumnTask },
+  mixins: [moveTaskOrColumnMixin],
   props: {
     column: {
       type: Object,
