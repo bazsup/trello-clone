@@ -1,7 +1,7 @@
 <template>
   <div
     class="column"
-    @drop="moveTaskOrColumn($event, column.tasks, columnIndex)"
+    @drop="moveTaskOrColumn($event, column.tasks)"
     @dragover.prevent
     @dragenter.prevent
   >

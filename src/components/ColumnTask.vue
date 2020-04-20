@@ -6,7 +6,7 @@
     @click="goToTask(task)"
     @dragover.prevent
     @dragenter.prevent
-    @drop.stop="moveTaskOrColumn($event, column.tasks, columnIndex, taskIndex)"
+    @drop.stop="moveTaskOrColumn($event, column.tasks, taskIndex)"
   >
     <span class="w-full flex-no-shrink font-bold">
       {{ task.name }}
