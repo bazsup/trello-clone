@@ -14,9 +14,7 @@ export default {
     }
   },
   methods: {
-    moveTaskOrColumn (event) {
-      const transferData = JSON.parse(event.dataTransfer.getData('payload'))
-
+    moveTaskOrColumn (transferData) {
       if (transferData.type === 'task') {
         this.moveTask(transferData)
       } else if (transferData.type === 'column') {

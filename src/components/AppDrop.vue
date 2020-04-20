@@ -12,9 +12,8 @@
 export default {
   methods: {
     onDrop ($event) {
-      // const transferData = JSON.parse($event.dataTransfer.getData('payload'))
-
-      this.$emit('drop', $event)
+      const transferData = JSON.parse(event.dataTransfer.getData('payload'))
+      this.$emit('drop', transferData)
     }
   }
 }
