@@ -25,7 +25,7 @@ export default {
       if (transferData.type === 'task') {
         this.moveTask(event, toTask, toTaskIndex, transferData)
       } else if (transferData.type === 'column') {
-        this.moveColumn(event, toColumnIndex, transferData)
+        this.moveColumn(event, transferData)
       }
     },
     moveTask (event, toTasks, toTaskIndex, { fromColumnIndex, fromTaskIndex }) {
@@ -38,10 +38,10 @@ export default {
         toTaskIndex
       })
     },
-    moveColumn (event, toColumnIndex, { fromColumnIndex }) {
+    moveColumn (event, { fromColumnIndex }) {
       this.$store.commit('MOVE_COLUMN', {
         fromColumnIndex,
-        toColumnIndex
+        toColumnIndex: this.columnIndex
       })
     }
   }
